@@ -121,9 +121,9 @@ export default {
       return week[dayIndex];
     },
     getDayEvents(date, day){
-      let stackIndex = 0;
+      // let stackIndex = 0;
       let dayEvents = [];
-      let startedEvents = [];
+      // let startedEvents = [];
       this.sortedEvents.forEach(event => {
         let startDate = moment(event.start).format('YYYY-MM-DD')
         let endDate = moment(event.end).format('YYYY-MM-DD')
@@ -152,8 +152,8 @@ export default {
             dayEvents.push({...event,width})
           }
           // else{
-          // 　let width = this.getEventWidth(date, endDate, day)
-          // 　dayEvents.push({...event,width})
+          //  let width = this.getEventWidth(date, endDate, day)
+          //  dayEvents.push({...event,width})
           // }
         }
       });
@@ -171,11 +171,11 @@ export default {
     // dragStart(eventId){
     //   console.log(eventId);
     // }
-    dragStart(dayEvent){
-      event.dataTransfer.effectAllowed = "move";
-      event.dataTransfer.dropEffect = "move";
-      event.dataTransfer.setData("eventId", dayEvent.id);
-    },
+    // dragStart(dayEvent){
+    //   event.dataTransfer.effectAllowed = "move";
+    //   event.dataTransfer.dropEffect = "move";
+    //   event.dataTransfer.setData("eventId", dayEvent.id);
+    // },
     // dragEnd(){
     //   console.log(event.dataTransfer.getData("eventId"));
     //   // @drop="dragEnd(day.date)"
