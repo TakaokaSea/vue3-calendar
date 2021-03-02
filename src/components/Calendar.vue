@@ -21,6 +21,8 @@
           :class="{outside: currentMonth !== day.month}"
           v-for="(day, index) in week"
           :key="`second-${index}`"
+          @drop="dragEnd(day.date)"
+          @dragover.prevent
         >
           <div class="calendar-day">
             {{ day.day }}
@@ -30,7 +32,8 @@
               v-if="dayEvent.width"
               class="calendar-event"
               :style="`width:${dayEvent.width}%;background-color:${dayEvent.color}`" 
-              draggable="true" >
+              draggable="true"
+              @dragstart="dragStart(dayEvent)" >
               {{ dayEvent.name }}
             </div>
             <div v-else style="height:26px"></div>
@@ -90,6 +93,18 @@ export default {
     }
   },
   methods: {
+    dragStart(dayEvent){
+      event.dataTransfer.effectAllowed = "move";
+      event.dataTransfer.dropEffect = "move";
+      event.dataTransfer.setData("eventId", dayEvent.id);
+    },
+    dragEnd(date){
+      let eventId = event.dataTransfer.getData("eventId");
+      let dragEvent = this.events.find(event => event.id == eventId)
+      let betweenDays = moment(dragEvent.end).diff(moment(dragEvent.start), "days");
+      dragEvent.start = date;
+      dragEvent.end = moment(dragEvent.start).add(betweenDays, "days").format("YYYY-MM-DD");
+    },
     getStartDate() {
       let date = moment(this.currentDate);
       date.startOf("month");
@@ -115,7 +130,8 @@ export default {
           weekRow.push({
             day: calendarDate.get("date"),
             month: calendarDate.format("YYYY-MM"),
-            dayEvents
+            date: calendarDate.format("YYYY-MM-DD"),
+            dayEvents:dayEvents,
           });
           calendarDate.add(1, "days");
         }
